@@ -5,3 +5,4 @@ export function getFormattedDate(date) {
 
 
 
+// cecci est utlise pour le format de la date ds l'affichage 
