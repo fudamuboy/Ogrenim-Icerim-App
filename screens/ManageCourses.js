@@ -1,8 +1,11 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import React, { useLayoutEffect } from 'react'
 import EvilIcons from '@expo/vector-icons/EvilIcons';
+import { useContext } from 'react';
+import { CoursesContext } from '../store/coursesContext';
 
 export default function ManageCourses({ route, navigation }) {
+    const coursesContext = useContext(CoursesContext)
     const courseId = route.params?.courseId
     // liaison avec le courseId du pressable
     //Si courseId existe → isEditing = true (on est en mode édition du cours).
@@ -20,12 +23,16 @@ export default function ManageCourses({ route, navigation }) {
 
     // fonction de retour ds les courses 
     function deleteCourse() {
+        coursesContext.deleteCourse(courseId)
+        navigation.goBack()
+    }
+    function CancelHandler() {
         navigation.goBack()
     }
     return (
         <View style={styles.container}>
             <View style={styles.btns}>
-                <Pressable>
+                <Pressable onPress={CancelHandler}>
                     <View style={styles.cancel}>
                         <Text style={styles.cancelText}>Cancel </Text>
                     </View>
