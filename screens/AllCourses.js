@@ -6,7 +6,8 @@ import { CoursesContext } from '../store/coursesContext'
 export default function AllCourses() {
     const coursesContext = useContext(CoursesContext)
     return (
-        <Courses courses={coursesContext.courses} coursPeriod="Hepsi" />
+        <Courses courses={coursesContext.courses} coursPeriod="Hepsi"
+            nullText="You are not enrolled in any course" />
     )
 }
 

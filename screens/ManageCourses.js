@@ -29,6 +29,24 @@ export default function ManageCourses({ route, navigation }) {
     function CancelHandler() {
         navigation.goBack()
     }
+    // ds cette partie if kismin guncelle yapcak ve else de ekle de yapcak 
+    function addOrUpdateHandler() {
+        if (isEditing) {
+            coursesContext.updateCourse(courseId, {
+                description: 'Guncellenen kurs',
+                amount: 169,
+                date: new Date()
+            })
+        }
+        else {
+            coursesContext.addCourse({
+                description: 'Eklenen Kurs',
+                amount: 169,
+                date: new Date()
+            })
+        }
+        navigation.goBack() // retour permettant l'affichage de la mise a jour 
+    }
     return (
         <View style={styles.container}>
             <View style={styles.btns}>
@@ -36,8 +54,8 @@ export default function ManageCourses({ route, navigation }) {
                     <View style={styles.cancel}>
                         <Text style={styles.cancelText}>Cancel </Text>
                     </View>
-                </Pressable>
-                <Pressable>
+                </Pressable >
+                <Pressable onPress={addOrUpdateHandler}>
                     <View style={styles.addOrDelete}>
                         <Text style={styles.addOrDeleteText}>{isEditing ? 'Update' : 'Add'} </Text>
                     </View>

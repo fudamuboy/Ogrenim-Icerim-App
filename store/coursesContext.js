@@ -1,4 +1,5 @@
 import { createContext, useReducer } from "react";
+import Courses from "../components/Courses";
 
 
 const COURSES = [
@@ -71,7 +72,7 @@ export const CoursesContext = createContext({
     updateCourse: (id, { description, amount, date }) => { },
 });
 
-function coursesReducer(action, state) {
+function coursesReducer(state, action) { // ds cette partie vient tjrs avant action
     switch (action.type) {
         case 'ADD':
             const id = new Date().toString() + Math.random().toString();
@@ -82,7 +83,7 @@ function coursesReducer(action, state) {
 
         case 'UPDATE':
             const updatableCourseIndex = state.findIndex(
-                (course) => course.id !== action.payload.id
+                (course) => course.id === action.payload.id
             )
             const updateableCourse = state[updatableCourseIndex]
             const updatedItem = { ...updateableCourse, ...action.payload.data }
@@ -97,6 +98,7 @@ function coursesReducer(action, state) {
 function CoursesContextProvider({ children }) {
 
     const [coursesState, dispatch] = useReducer(coursesReducer, COURSES)
+    // console.log(coursesState);
 
     function addCourse(courseData) {
         dispatch({ type: 'ADD', payload: courseData })
@@ -122,3 +124,18 @@ function CoursesContextProvider({ children }) {
 }
 
 export default CoursesContextProvider
+
+// case 'UPDATE':
+//     const updatableCourseIndex = state.findIndex(
+//         (course) => course.id === action.payload.id // Correction ici
+//     );
+
+//     if (updatableCourseIndex === -1) return state; // Vérifier si l'ID existe
+
+//     const updateableCourse = state[updatableCourseIndex];
+//     const updatedItem = { ...updateableCourse, ...action.payload.data };
+
+//     const updatedCourses = [...state];
+//     updatedCourses[updatableCourseIndex] = updatedItem;
+
+//     return updatedCourses; on peut faire aussi de cette maniere 

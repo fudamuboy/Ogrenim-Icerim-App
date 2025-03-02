@@ -4,11 +4,18 @@ import CoursesSummary from './CoursesSummary'
 import CoursesList from './CoursesList'
 
 // op compris a revoir 
-export default function Courses({ coursPeriod, courses }) {
+export default function Courses({ coursPeriod, courses, nullText }) {
+    let content = <Text style={styles.alert}>{nullText}</Text>
+    if (courses.length > 0) {
+        content = <CoursesList courses={courses} />
+    }
+
     return (
+
+
         <View style={styles.container}>
             <CoursesSummary courses={courses} periodName={coursPeriod} />
-            <CoursesList courses={courses} />
+            {content}
         </View>
     )
 }
@@ -18,6 +25,12 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingHorizontal: 30,
         paddingTop: 25,
+    },
+    alert: {
+        fontSize: 16,
+        marginTop: 30,
+        textAlign: 'center',
+        fontFamily: 'Georgia',
     },
 })
 

@@ -20,7 +20,8 @@ export default function RecentCourses() {
     })
 
     return (
-        <Courses courses={recentCourses} coursPeriod="Son 1 Hafta" />
+        <Courses courses={recentCourses} coursPeriod="Son 1 Hafta"
+            nullText="You have not been enrolled in any courses recently" />
     )
 }
 
