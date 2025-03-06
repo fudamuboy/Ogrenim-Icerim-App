@@ -3,6 +3,7 @@ import React, { useLayoutEffect } from 'react'
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import { useContext } from 'react';
 import { CoursesContext } from '../store/coursesContext';
+import CourseForm from '../components/CourseForm';
 
 export default function ManageCourses({ route, navigation }) {
     const coursesContext = useContext(CoursesContext)
@@ -49,6 +50,7 @@ export default function ManageCourses({ route, navigation }) {
     }
     return (
         <View style={styles.container}>
+            <CourseForm />
             <View style={styles.btns}>
                 <Pressable onPress={CancelHandler}>
                     <View style={styles.cancel}>
@@ -61,6 +63,7 @@ export default function ManageCourses({ route, navigation }) {
                     </View>
                 </Pressable>
             </View>
+
             {isEditing && (
                 <View style={styles.deleteContainer}>
                     <EvilIcons name="trash" size={36} color="black" onPress={deleteCourse} />
