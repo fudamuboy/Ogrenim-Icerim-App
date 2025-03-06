@@ -12,6 +12,9 @@ export default function ManageCourses({ route, navigation }) {
     //Si courseId existe → isEditing = true (on est en mode édition du cours).
     // Si courseId n'existe pas → isEditing = false (on est en mode ajout d'un nouveau cours)
     let isEditing = false
+
+    const selectedCourse = coursesContext.courses.find((course) => course.id === courseId)
+
     if (courseId) {
         isEditing = true
     }
@@ -31,38 +34,23 @@ export default function ManageCourses({ route, navigation }) {
         navigation.goBack()
     }
     // ds cette partie if kismin guncelle yapcak ve else de ekle de yapcak 
-    function addOrUpdateHandler() {
+    function addOrUpdateHandler(courseData) {
         if (isEditing) {
-            coursesContext.updateCourse(courseId, {
-                description: 'Guncellenen kurs',
-                amount: 169,
-                date: new Date()
-            })
+            coursesContext.updateCourse(courseId, courseData)
         }
         else {
-            coursesContext.addCourse({
-                description: 'Eklenen Kurs',
-                amount: 169,
-                date: new Date()
-            })
+            coursesContext.addCourse(courseData)
         }
         navigation.goBack() // retour permettant l'affichage de la mise a jour 
     }
     return (
         <View style={styles.container}>
-            <CourseForm />
-            <View style={styles.btns}>
-                <Pressable onPress={CancelHandler}>
-                    <View style={styles.cancel}>
-                        <Text style={styles.cancelText}>Cancel </Text>
-                    </View>
-                </Pressable >
-                <Pressable onPress={addOrUpdateHandler}>
-                    <View style={styles.addOrDelete}>
-                        <Text style={styles.addOrDeleteText}>{isEditing ? 'Update' : 'Add'} </Text>
-                    </View>
-                </Pressable>
-            </View>
+            <CourseForm
+                buttonLabel={isEditing ? 'Update' : 'Add'}
+                CancelHandler={CancelHandler}
+                onSubmit={addOrUpdateHandler}
+                defaultValues={selectedCourse} />
+
 
             {isEditing && (
                 <View style={styles.deleteContainer}>
@@ -87,29 +75,5 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         marginTop: 16,
     },
-    btns: {
-        flexDirection: 'row',
-        justifyContent: 'center'
-    },
-    cancel: {
-        backgroundColor: 'red',
-        minWidth: 120,
-        marginRight: 10,
-        padding: 8,
-        alignItems: 'center',
 
-    },
-    cancelText: {
-        color: 'white',
-    },
-    addOrDelete: {
-        backgroundColor: 'gray',
-        minWidth: 120,
-        marginRight: 10,
-        padding: 8,
-        alignItems: 'center',
-    },
-    addOrDeleteText: {
-        color: 'white',
-    },
 })

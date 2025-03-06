@@ -5,7 +5,7 @@ import CourseItem from './CourseItem'
 export default function CoursesList({ courses }) {
 
     function renderCourseItem(itemData) {
-        // console.log(itemData); et puis recuperation des item grace a CourseItem
+        // console.log(itemData);  et puis recuperation des item grace a CourseItem
         return <CourseItem {...itemData.item} />
 
     }

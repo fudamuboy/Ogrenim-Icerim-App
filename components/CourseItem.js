@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
     },
     priceContainer: {
         backgroundColor: 'white',
-        paddingVertical: 3,
-        paddingHorizontal: 8,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 10,
