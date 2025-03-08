@@ -4,6 +4,9 @@ import EvilIcons from '@expo/vector-icons/EvilIcons';
 import { useContext } from 'react';
 import { CoursesContext } from '../store/coursesContext';
 import CourseForm from '../components/CourseForm';
+import { storeCourse } from '../helper/http';
+
+
 
 export default function ManageCourses({ route, navigation }) {
     const coursesContext = useContext(CoursesContext)
@@ -39,6 +42,7 @@ export default function ManageCourses({ route, navigation }) {
             coursesContext.updateCourse(courseId, courseData)
         }
         else {
+            storeCourse(courseData)
             coursesContext.addCourse(courseData)
         }
         navigation.goBack() // retour permettant l'affichage de la mise a jour 

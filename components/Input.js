@@ -1,15 +1,20 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 import React from 'react'
 
-export default function Input({ label, textInputConfig, style }) {
+export default function Input({ label, textInputConfig, style, invalid }) {
     const inputStyles = [styles.inputText] // op trop compris sonra bakcam
+
     if (textInputConfig && textInputConfig.multiline) {
         inputStyles.push(styles.inputMultiline)
     }
+    // la partie de rendre le background red 
+    if (invalid) {
+        inputStyles.push(styles.invalidInput)
+    }
     return (
         <View style={[styles.inputContainer, style]}>
-            <Text style={styles.label}>{label}</Text>
-            <TextInput style={styles.inputStyles} {...textInputConfig} />
+            <Text style={[styles.label, invalid && styles.invalidLabel]}>{label}</Text>
+            <TextInput style={inputStyles} {...textInputConfig} />
         </View>
     )
 }
@@ -25,7 +30,7 @@ const styles = StyleSheet.create({
         color: 'blue',
         marginBottom: 4,
     },
-    inputStyles: {
+    inputText: {
         backgroundColor: 'pink',
         padding: 5,
         borderRadius: 10,
@@ -35,6 +40,12 @@ const styles = StyleSheet.create({
     inputMultiline: {
         minHeight: 100,
         textAlignVertical: 'top',
+    },
+    invalidLabel: {
+        color: 'red',
+    },
+    invalidInput: {
+        backgroundColor: 'red',
     },
 })
 
