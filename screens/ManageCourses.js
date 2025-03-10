@@ -4,7 +4,7 @@ import EvilIcons from '@expo/vector-icons/EvilIcons';
 import { useContext } from 'react';
 import { CoursesContext } from '../store/coursesContext';
 import CourseForm from '../components/CourseForm';
-import { storeCourse } from '../helper/http';
+import { storeCourse, updateCourse, deleteCourseHttp } from '../helper/http';
 
 
 
@@ -29,21 +29,24 @@ export default function ManageCourses({ route, navigation }) {
 
 
     // fonction de retour ds les courses 
-    function deleteCourse() {
+    async function deleteCourse() {
         coursesContext.deleteCourse(courseId)
+        await deleteCourseHttp(courseId)
         navigation.goBack()
     }
     function CancelHandler() {
         navigation.goBack()
     }
     // ds cette partie if kismin guncelle yapcak ve else de ekle de yapcak 
-    function addOrUpdateHandler(courseData) {
+    async function addOrUpdateHandler(courseData) {
         if (isEditing) {
             coursesContext.updateCourse(courseId, courseData)
+            await updateCourse(courseId, courseData)
         }
         else {
-            storeCourse(courseData)
-            coursesContext.addCourse(courseData)
+
+            const id = await storeCourse(courseData)
+            coursesContext.addCourse({ ...courseData, id: id })
         }
         navigation.goBack() // retour permettant l'affichage de la mise a jour 
     }
