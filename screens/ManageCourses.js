@@ -6,10 +6,12 @@ import { CoursesContext } from '../store/coursesContext';
 import CourseForm from '../components/CourseForm';
 import { storeCourse, updateCourse, deleteCourseHttp } from '../helper/http';
 import LoadingSpinner from '../components/LoadingSpinner';
+import ErrorText from '../components/ErrorText';
 
 
 
 export default function ManageCourses({ route, navigation }) {
+    const [error, setError] = useState()
     const [isSubmitting, setIsSubmitting] = useState(false)
     const coursesContext = useContext(CoursesContext)
     const courseId = route.params?.courseId
@@ -33,9 +35,21 @@ export default function ManageCourses({ route, navigation }) {
     // fonction de retour ds les courses 
     async function deleteCourse() {
         setIsSubmitting(true)
-        coursesContext.deleteCourse(courseId)
-        await deleteCourseHttp(courseId)
-        navigation.goBack()
+        setError(null)
+        try {
+            coursesContext.deleteCourse(courseId)
+            await deleteCourseHttp(courseId)
+            navigation.goBack()
+
+        } catch (error) {
+            setError('Kurlari silemedik')
+            setIsSubmitting(false)
+        }
+
+
+    }
+    if (error && !isSubmitting) {
+        return <ErrorText mesaj={error} />
     }
     function CancelHandler() {
         navigation.goBack()
@@ -43,16 +57,23 @@ export default function ManageCourses({ route, navigation }) {
     // ds cette partie if kismin guncelle yapcak ve else de ekle de yapcak 
     async function addOrUpdateHandler(courseData) {
         setIsSubmitting(true)
-        if (isEditing) {
-            coursesContext.updateCourse(courseId, courseData)
-            await updateCourse(courseId, courseData)
-        }
-        else {
+        setError(null)
+        try {
+            if (isEditing) {
+                coursesContext.updateCourse(courseId, courseData)
+                await updateCourse(courseId, courseData)
+            }
+            else {
 
-            const id = await storeCourse(courseData)
-            coursesContext.addCourse({ ...courseData, id: id })
+                const id = await storeCourse(courseData)
+                coursesContext.addCourse({ ...courseData, id: id })
+            }
+            navigation.goBack() // retour permettant l'affichage de la mise a jour 
+        } catch (error) {
+            setError('Kurs ekelmede veya guncellemede problem var ')
+            setIsSubmitting(false)
         }
-        navigation.goBack() // retour permettant l'affichage de la mise a jour 
+
     }
     if (isSubmitting) {
         return <LoadingSpinner />
