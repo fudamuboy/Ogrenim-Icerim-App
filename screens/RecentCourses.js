@@ -1,10 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import Courses from '../components/Courses'
 import { useContext } from 'react'
 import { CoursesContext } from '../store/coursesContext'
 import { getLastWeek } from '../helper/date'
 import { getCourses } from '../helper/http'
+import LoadingSpinner from '../components/LoadingSpinner'
+import ErrorText from '../components/ErrorText'
 
 
 
@@ -15,20 +17,35 @@ export default function RecentCourses() {
     const coursesContext = useContext(CoursesContext)
 
     const [fetchedCourses, setFetchedCourses] = useState([])
+    const [isFetching, setIsFetching] = useState(true)
+    const [error, setError] = useState()
 
     useEffect(() => {
         async function takeCourses() {
-            const courses = await getCourses()
-            coursesContext.setCourse(courses)
+            setError(null)
+            setIsFetching(true)
+            try {
+                const courses = await getCourses()
+                coursesContext.setCourse(courses)
+
+            } catch (error) {
+                setError('Kurlari cekemedik')
+            }
+
+
+            setIsFetching(false)
             // setFetchedCourses(courses)
         }
 
-
-
-
-
         takeCourses()
     }, []);
+
+    if (error && !isFetching) {
+        return <ErrorText mesaj={error} />
+    }
+    if (isFetching) {
+        return <LoadingSpinner />
+    }
 
     const recentCourses = coursesContext.courses.filter((course) => { // ✅ Correction ici
         const today = new Date()

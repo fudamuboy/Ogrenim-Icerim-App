@@ -1,14 +1,16 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
-import React, { useLayoutEffect } from 'react'
+import React, { useLayoutEffect, useState } from 'react'
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import { useContext } from 'react';
 import { CoursesContext } from '../store/coursesContext';
 import CourseForm from '../components/CourseForm';
 import { storeCourse, updateCourse, deleteCourseHttp } from '../helper/http';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 
 
 export default function ManageCourses({ route, navigation }) {
+    const [isSubmitting, setIsSubmitting] = useState(false)
     const coursesContext = useContext(CoursesContext)
     const courseId = route.params?.courseId
     // liaison avec le courseId du pressable
@@ -30,6 +32,7 @@ export default function ManageCourses({ route, navigation }) {
 
     // fonction de retour ds les courses 
     async function deleteCourse() {
+        setIsSubmitting(true)
         coursesContext.deleteCourse(courseId)
         await deleteCourseHttp(courseId)
         navigation.goBack()
@@ -39,6 +42,7 @@ export default function ManageCourses({ route, navigation }) {
     }
     // ds cette partie if kismin guncelle yapcak ve else de ekle de yapcak 
     async function addOrUpdateHandler(courseData) {
+        setIsSubmitting(true)
         if (isEditing) {
             coursesContext.updateCourse(courseId, courseData)
             await updateCourse(courseId, courseData)
@@ -49,6 +53,9 @@ export default function ManageCourses({ route, navigation }) {
             coursesContext.addCourse({ ...courseData, id: id })
         }
         navigation.goBack() // retour permettant l'affichage de la mise a jour 
+    }
+    if (isSubmitting) {
+        return <LoadingSpinner />
     }
     return (
         <View style={styles.container}>
