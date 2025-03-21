@@ -86,3 +86,9 @@ export async function deleteCourseHttp(id) {
 
 
 # Ekran Goruntusu
+
+https://github.com/user-attachments/assets/4356d3db-bf4a-4831-b005-1098b8825aa4
+
+# Backend Bağlantı Hatalarında Hata Mesajlarının Bastırılması durum
+
+https://github.com/user-attachments/assets/86df141f-72c4-43a3-81f1-599261044f0b
